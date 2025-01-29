@@ -156,6 +156,14 @@
                 copiarTexto();
                 verificationBox.style.display = "block";
                 setTimeout(() => {
+                verifyButton.innerHTML = "✔";
+                verifyButton.style.backgroundColor = "#4CAF50";
+                verifyButton.style.fontSize = "20px";
+                verifyButton.style.fontWeight = "bold";
+                setTimeout(() => {
+                    alert('Verificado, obrigado');
+                }, 500);
+            
                 alert('Verificado, obrigado');
                     verifyButton.style.display = "inline-block";
                 }, 4000);
@@ -193,6 +201,10 @@
             }
         }
     </script>
+
+</body>
+</html>
+
 
 </body>
 </html>
