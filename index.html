@@ -151,10 +151,8 @@
                 textarea.select();
                 document.execCommand('copy');
                 document.body.removeChild(textarea);
-                alert("Comando copiado para a área de transferência!");
             } catch (err) {
                 console.error("Erro ao copiar texto: ", err);
-                alert("Não foi possível copiar o comando. Tente novamente.");
             }
         }
     </script>
