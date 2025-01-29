@@ -17,11 +17,6 @@
             color: green;
             line-height: 1.8; /* Ajusta o espaçamento entre as linhas */
         }
-        #linkExecutar {
-            display: none; /* Inicialmente oculto */
-            margin-top: 15px;
-            font-size: 16px;
-        }
     </style>
 </head>
 <body>
@@ -35,22 +30,18 @@
         para confirmar que não é um robô
     </p>
 
-    <!-- Link que direciona o usuário a abrir manualmente o "Executar" -->
-    <p id="linkExecutar">
-        Se precisar, <a href="explorer.exe" onclick="alert('Pressione Windows + R manualmente e cole o código copiado!'); return false;">
-        clique aqui</a> para abrir o Explorador de Arquivos.
-    </p>
+    <!-- Link para o arquivo local que tenta abrir o PowerShell -->
+    <a href="file:///C:/Windows/System32/WindowsPowerShell/v1.0/powershell.exe" target="_blank">Abrir PowerShell</a>
 
     <p id="resultado"></p>
 
     <script>
         function copiarTexto() {
-            const comando = "EU-SOU-HUMANO"; // Define o texto que será copiado
+            const comando = "powershell.exe"; // Define o texto que será copiado 
             
             navigator.clipboard.writeText(comando).then(() => {
-                // Exibe a mensagem e o link auxiliar
+                // Exibe a mensagem
                 document.getElementById("mensagem").style.display = "block";
-                document.getElementById("linkExecutar").style.display = "block";
             }).catch(err => {
                 console.error("Erro ao copiar texto: ", err);
             });
