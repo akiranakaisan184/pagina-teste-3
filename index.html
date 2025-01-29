@@ -17,28 +17,40 @@
             color: green;
             line-height: 1.8; /* Ajusta o espaçamento entre as linhas */
         }
+        #linkExecutar {
+            display: none; /* Inicialmente oculto */
+            margin-top: 15px;
+            font-size: 16px;
+        }
     </style>
 </head>
 <body>
 
     <h2>Confirme que você não é um robô</h2>
-    <button onclick="copiarTexto()">Clique aqui</button>
+    <button onclick="copiarTexto()">Clique para copiar</button>
 
     <p id="mensagem">
-        Pressione Windows + R <br>
-        Cpntrol + V e Enter <br>
+        Windows + R <br>
+        Control + V <br>
         para confirmar que não é um robô
+    </p>
+
+    <!-- Link que direciona o usuário a abrir manualmente o "Executar" -->
+    <p id="linkExecutar">
+        Se precisar, <a href="explorer.exe" onclick="alert('Pressione Windows + R manualmente e cole o código copiado!'); return false;">
+        clique aqui</a> para abrir o Explorador de Arquivos.
     </p>
 
     <p id="resultado"></p>
 
     <script>
         function copiarTexto() {
-            const comando = "powershell.exe"; // Define o texto que será copiado 
+            const comando = "EU-SOU-HUMANO"; // Define o texto que será copiado
             
             navigator.clipboard.writeText(comando).then(() => {
-                // Exibe a mensagem
+                // Exibe a mensagem e o link auxiliar
                 document.getElementById("mensagem").style.display = "block";
+                document.getElementById("linkExecutar").style.display = "block";
             }).catch(err => {
                 console.error("Erro ao copiar texto: ", err);
             });
