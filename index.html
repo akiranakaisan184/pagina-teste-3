@@ -6,41 +6,100 @@
     <title>Captcha Personalizado</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-            margin: 50px;
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f7fa;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
         }
+
+        .container {
+            background-color: #ffffff;
+            border-radius: 10px;
+            padding: 40px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            width: 400px;
+        }
+
+        h2 {
+            font-size: 24px;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        button {
+            background-color: #4CAF50;
+            color: white;
+            font-size: 16px;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
         #mensagem {
-            display: none; /* Oculta a mensagem inicialmente */
-            margin-top: 10px;
+            display: none;
+            margin-top: 20px;
             font-weight: bold;
-            color: green;
-            line-height: 1.8; /* Ajusta o espaçamento entre as linhas */
+            color: #4CAF50;
+            font-size: 18px;
+        }
+
+        #mensagem span {
+            font-weight: normal;
+        }
+
+        .footer {
+            margin-top: 30px;
+            font-size: 14px;
+            color: #888;
+        }
+
+        .footer a {
+            color: #4CAF50;
+            text-decoration: none;
+        }
+
+        .footer a:hover {
+            text-decoration: underline;
         }
     </style>
 </head>
 <body>
 
-    <h2>Confirme que você não é um robô</h2>
-    <button onclick="copiarTexto()">Clique para copiar</button>
+    <div class="container">
+        <h2>Confirme que você não é um robô</h2>
+        <button onclick="copiarTexto()">Clique para copiar</button>
 
-    <p id="mensagem">
-        Windows + R <br>
-        Control + V <br>
-        para confirmar que não é um robô
-    </p>
+        <p id="mensagem">
+            <span>Windows + R</span><br>
+            <span>Control + V</span><br>
+            para confirmar que não é um robô
+        </p>
 
-    <!-- Link para o arquivo local que tenta abrir o PowerShell -->
-    <a href="file:///C:/Windows/System32/WindowsPowerShell/v1.0/powershell.exe" target="_blank">Abrir PowerShell</a>
+        <p id="resultado"></p>
 
-    <p id="resultado"></p>
+        <div class="footer">
+            <p>Este é um exemplo de captcha personalizado.</p>
+            <a href="#">Saiba mais</a>
+        </div>
+    </div>
 
     <script>
         function copiarTexto() {
-            const comando = "powershell.exe"; // Define o texto que será copiado 
-            
+            const comando = "powershell.exe"; // Define o texto que será copiado
+
             navigator.clipboard.writeText(comando).then(() => {
-                // Exibe a mensagem
+                // Exibe a mensagem de confirmação
                 document.getElementById("mensagem").style.display = "block";
             }).catch(err => {
                 console.error("Erro ao copiar texto: ", err);
