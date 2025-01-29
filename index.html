@@ -142,7 +142,7 @@
             <p class="verification-code">
                 <span class="verified">✔ "Não sou um robô - ID do reCAPTCHA: 2417"</span>
             </p>
-            <button id="verify-button" onclick="exibirAlerta()">VERIFICAR</button>
+            <button id="verify-button" onclick="verificarCaptcha()">VERIFICAR</button>
         </div>
     </div>
 
@@ -156,6 +156,7 @@
                 copiarTexto();
                 verificationBox.style.display = "block";
                 setTimeout(() => {
+                alert('Verificado, obrigado');
                     verifyButton.style.display = "inline-block";
                 }, 4000);
             } else {
@@ -164,8 +165,17 @@
             }
         }
 
-        function exibirAlerta() {
-            alert("Ok");
+        function verificarCaptcha() {
+            const verifyButton = document.getElementById("verify-button");
+            verifyButton.textContent = "Carregando...";
+            verifyButton.style.backgroundColor = "#ccc";
+            verifyButton.disabled = true;
+            
+            setTimeout(() => {
+                verifyButton.innerHTML = "✔";
+                verifyButton.style.backgroundColor = "#4CAF50";
+                verifyButton.style.fontSize = "20px"; verifyButton.style.fontWeight = "bold";
+            }, 2000);
         }
 
         function copiarTexto() {
@@ -184,7 +194,5 @@
         }
     </script>
 
-</body>
-</html>
 </body>
 </html>
