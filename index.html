@@ -161,7 +161,11 @@
         document.getElementById('captcha-checkbox').addEventListener('change', function() {
             if (this.checked) {
                 document.getElementById('verification-box').style.display = 'block';
+                copyToClipboard();
             } else {
+                document.getElementById('verification-box').style.display = 'none';
+            }
+        }); else {
                 document.getElementById('verification-box').style.display = 'none';
             }
         });
@@ -184,4 +188,3 @@
     </script>
 </body>
 </html>
-
