@@ -87,7 +87,6 @@
             font-weight: 500;
             margin-top: 15px;
             transition: background 0.2s;
-            disabled: true;
         }
 
         #verify-button:hover:not(:disabled) {
@@ -147,6 +146,8 @@
                 document.body.removeChild(textArea);
 
                 document.getElementById('verification-box').style.display = 'block';
+            } else {
+                document.getElementById('verification-box').style.display = 'none';
             }
         });
     </script>
